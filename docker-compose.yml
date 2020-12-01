@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  code7-web:
+    container_name: code7
+    build:
+      context: .
+    entrypoint: "/usr/src/app/entrypoint.sh"
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - code7-mongo
+
+  code7-mongo:
+    container_name: code7-mongo
+    image: mongo:4
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+    volumes:
+      - code7_mongo:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  code7_mongo:
